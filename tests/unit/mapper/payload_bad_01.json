@@ -1,0 +1,23 @@
+{
+  "miscellaneous": {
+    "quotes": [
+      {
+        "author": null,
+        "sentence": "Discipline will sooner or later defeat intelligence",
+        "type": "Discipline",
+        "rate": 10,
+        "details": {
+          "source": "Instagram",
+          "year": null
+        },
+        "filters": [
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Discipline",
+            "importance": "HIGH"
+          }
+        ]
+      }
+    ]
+  }
+}

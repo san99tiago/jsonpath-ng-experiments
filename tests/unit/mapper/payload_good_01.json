@@ -1,0 +1,113 @@
+{
+  "miscellaneous": {
+    "quotes": [
+      {
+        "author": "Japanese Proverb",
+        "sentence": "Discipline will sooner or later defeat intelligence",
+        "type": "Discipline",
+        "rate": 10,
+        "details": {
+          "source": "Instagram",
+          "year": null
+        },
+        "filters": [
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Discipline",
+            "importance": "HIGH"
+          },
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Success",
+            "importance": "LOW"
+          },
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Motivation",
+            "importance": "LOW"
+          },
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Work",
+            "importance": "LOW"
+          }
+        ]
+      },
+      {
+        "author": "Alex Hormozi",
+        "sentence": "The longer you delay the ask, the bigger the ask you can make",
+        "type": "Life",
+        "rate": 10,
+        "details": {
+          "source": "100M Offers",
+          "year": 2021
+        },
+        "filters": [
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Life",
+            "importance": "HIGH"
+          },
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Success",
+            "importance": "HIGH"
+          },
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Motivation",
+            "importance": "LOW"
+          },
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Finance",
+            "importance": "LOW"
+          },
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Marketing",
+            "importance": "LOW"
+          }
+        ]
+      },
+      {
+        "author": "Benjamin Franklin",
+        "sentence": "Well done is better than well said",
+        "type": "Life",
+        "rate": 10,
+        "details": {
+          "source": null,
+          "year": null
+        },
+        "filters": [
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Life",
+            "importance": "HIGH"
+          },
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Success",
+            "importance": "LOW"
+          },
+          {
+            "quoteSentiment": "Positive",
+            "quoteType": "Discipline",
+            "importance": "LOW"
+          }
+        ]
+      },
+      {
+        "author": "Charles F. Kettering",
+        "sentence": "A problem well stated is a problem half solved",
+        "type": "Wisdom",
+        "rate": 9,
+        "details": {
+          "source": null,
+          "year": null
+        },
+        "filters": []
+      }
+    ]
+  }
+}
