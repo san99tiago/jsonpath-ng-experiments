@@ -8,6 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
+fastapi = {extras = ["all"], version = "^0.103.0"}
 jsonpath-ng = "^1.5.3"
 jsonschema = "^4.19.0"
 
@@ -30,6 +31,7 @@ build-backend = "poetry.core.masonry.api"
 
 # List of multiple useful commands to run app or tests locally
 [tool.poe.tasks]
+local-fastapi = "uvicorn src.main:app --reload"
 black-format = "black ."
 black-check = "black . --check --diff -v"
 test-unit = ["_test_unit", "_coverage_html"]
