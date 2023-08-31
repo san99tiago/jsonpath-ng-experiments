@@ -5,6 +5,7 @@
 *.zip
 temp.*
 .DS_Store
+temp/
 
 # To ignore Lambda Layers files (like Python dependencies)
 modules
