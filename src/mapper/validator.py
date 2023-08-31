@@ -1,7 +1,7 @@
 import os
 import json
-from typing import Dict, Optional
-from jsonschema import validate, ValidationError
+from typing import Dict, Optional, Union, Literal, Any
+import jsonschema
 
 
 class Validator:
@@ -9,28 +9,37 @@ class Validator:
     JSON Validator implementation based on a schema and a payload.
     """
 
-    def __init__(
-        self, payload: Dict[str, object], schema: Optional[Dict[str, object]] = None
-    ) -> None:
-        self.payload = payload
+    def __init__(self, schema: Optional[Dict[str, object]] = None) -> None:
         self.schema = schema
         if self.schema is None:
             self._load_schema()
-        self._validate_payload()
 
     def _load_schema(self) -> None:
         current_dir = os.path.dirname(os.path.abspath(__file__))
         models_dir = os.path.join(current_dir, "models")
-        schema_path = os.path.join(models_dir, "schema.json")
+        schema_path = os.path.join(models_dir, "source_schema.json")
 
         with open(schema_path, "r") as schema_file:
             self.schema = json.load(schema_file)
 
-    def _validate_payload(self) -> None:
+    def validate_payload(
+        self,
+        payload: Dict[str, object],
+    ) -> Union[Literal[True], dict]:
         try:
-            validate(
-                instance=self.payload,
+            jsonschema.validate(
+                instance=payload,
                 schema=self.schema,
             )
-        except ValidationError as e:
-            raise ValueError("Payload validation error: " + str(e))
+            return True
+        except jsonschema.ValidationError as val_error:
+            print(
+                f"Validation error with payload. Error message: {val_error.message}, json_path: {val_error.json_path}"
+            )
+            return {
+                "Error": "Payload schema validation error",
+                "Details": {
+                    "Message": val_error.message,
+                    "JsonPath": val_error.json_path,
+                },
+            }

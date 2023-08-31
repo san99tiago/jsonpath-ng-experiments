@@ -1,0 +1,59 @@
+{
+  "mapper": [
+    {
+      "source": "miscellaneous.quotes[*].uuid",
+      "destination": "quotes[*].id"
+    },
+    {
+      "source": "miscellaneous.quotes[*].author",
+      "destination": "quotes[*].author"
+    },
+    {
+      "source": "miscellaneous.quotes[*].sentence",
+      "destination": "quotes[*].quote"
+    },
+    {
+      "source": "miscellaneous.quotes[*].score",
+      "destination": "quotes[*].quality",
+      "logic": {
+        "CASE": {
+          "default": null,
+          "enumsMapping": [
+            {
+              "inputValue": 1,
+              "outputValue": "bad"
+            },
+            {
+              "inputValue": 2,
+              "outputValue": "normal"
+            },
+            {
+              "inputValue": 3,
+              "outputValue": "good"
+            },
+            {
+              "inputValue": 4,
+              "outputValue": "great"
+            },
+            {
+              "inputValue": 5,
+              "outputValue": "awesome"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "source": "miscellaneous.quotes[*].filters[?(@.importance=='HIGH')].quoteType",
+      "destination": "quotes[*].category"
+    },
+    {
+      "source": "miscellaneous.quotes[*].filters[?(@.importance=='HIGH')].quoteSentiment",
+      "destination": "quotes[*].sentiment"
+    },
+    {
+      "source": "miscellaneous.quotes[*].filters[*].quoteType",
+      "destination": "quotes[*].allTypes[*].type"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "miscellaneous": {
+      "type": "object",
+      "properties": {
+        "quotes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "uuid": {
+                "type": "string"
+              },
+              "author": {
+                "type": "string"
+              },
+              "sentence": {
+                "type": "string"
+              },
+              "score": {
+                "type": "integer"
+              },
+              "details": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": ["string", "null"]
+                  },
+                  "year": {
+                    "type": ["null", "integer"]
+                  }
+                },
+                "required": ["source", "year"]
+              },
+              "filters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "quoteSentiment": {
+                      "type": "string",
+                      "enum": ["Positive"]
+                    },
+                    "quoteType": {
+                      "type": "string",
+                      "enum": [
+                        "Discipline",
+                        "Success",
+                        "Motivation",
+                        "Work",
+                        "Life",
+                        "Finance",
+                        "Marketing"
+                      ]
+                    },
+                    "importance": {
+                      "type": "string",
+                      "enum": ["HIGH", "LOW"]
+                    }
+                  },
+                  "required": ["quoteSentiment", "quoteType", "importance"]
+                }
+              }
+            },
+            "required": [
+              "uuid",
+              "author",
+              "sentence",
+              "score",
+              "details",
+              "filters"
+            ]
+          }
+        }
+      },
+      "required": ["quotes"]
+    }
+  },
+  "required": ["miscellaneous"]
+}
