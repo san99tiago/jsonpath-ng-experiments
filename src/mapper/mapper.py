@@ -6,14 +6,12 @@ from typing import Dict, Optional
 
 from jsonpath_ng.ext import parse
 
-from .validator import Validator
-
 
 class Mapper:
     """
-    Mapper implementation that enables Read/Write operations from on a JSON
-    Mapper document with JMESPath Standards for "sources" and "destinations" of
-    2 different JSON files (considered as the "input" and "output" definitions).
+    A Mapper implementation facilitating Read/Write operations on a JSON Mapper
+    document using JMESPath standards for "sources" and "destinations" of two
+    different JSON files (referred to as "input" and "output" definitions).
     """
 
     def __init__(
@@ -21,12 +19,23 @@ class Mapper:
         payload: Dict[str, object],
         json_mapper: Optional[Dict[str, object]] = None,
     ) -> None:
+        """
+        Initialize the Mapper with the provided payload and JSON mapper.
+
+        Args:
+            payload (Dict[str, object]): The input JSON payload.
+            json_mapper (Optional[Dict[str, object]]): The JSON mapper definition.
+                If not provided, it will be loaded from the default path.
+        """
         self.payload = payload
         self.json_mapper = json_mapper
         if self.json_mapper is None:
             self._load_json_mapper()
 
     def _load_json_mapper(self) -> None:
+        """
+        Load the JSON mapper definition from the default path.
+        """
         current_dir = os.path.dirname(os.path.abspath(__file__))
         models_dir = os.path.join(current_dir, "models")
         json_mapper_path = os.path.join(models_dir, "mapper.json")
@@ -35,71 +44,118 @@ class Mapper:
             self.json_mapper = json.load(json_mapper_file)
 
     def convert_payload(self) -> dict:
-        final_payload = {"quotes": []}
-        for element in self.json_mapper["mapper"]:
-            print(f"\nProcessing mapper element: {element}")
+        """
+        Convert the payload using the JSON mapper logic.
 
-            # Read source
+        Returns:
+            dict: The transformed payload.
+        """
+        transformed_payload = {}
+        for element in self.json_mapper["mapper"]:
+            print("\n----- Processing mapper element -----")
+            print(f"--> element: {element}")
+            batch_updates = []
             source_jsonpath = parse(element["source"])
+            destination_path = element["destination"]
             matched_result = source_jsonpath.find(self.payload)
 
-            print(len(matched_result))
-
             for match in matched_result:
-                pprint.pprint(f"value: {match.value}")
-                pprint.pprint(f"match.full_path: {str(match.full_path)}")
+                match_value = match.value
+                match_full_path = str(match.full_path)
+                pprint.pprint(f"match_value: {match_value}")
+                pprint.pprint(f"match_full_path: {match_full_path}")
 
-                # Write destination
-                pprint.pprint("---- beginning destination part ----")
-                indexes = self.extract_indexes(str(match.full_path))
-                pprint.pprint(f"indexes: {indexes}")
+                if "logic" in element:
+                    match_value = self.apply_transform_logic(
+                        match_value, element["logic"]
+                    )
+                    pprint.pprint(f"match_value (transformed): {match_value}")
 
-                pprint.pprint(f"element['destination']: {element['destination']}")
-                # pprint.pprint(f"final_payload: {final_payload}")
+                # Convert the destination path compatible to "write" operations
+                indexes_from_match = self.extract_indexes(match_full_path)
+                # pprint.pprint(f"indexes_from_match: {indexes_from_match}")
 
-                updated_element_destination = self.inject_indexes(
-                    element["destination"], indexes
+                updated_destination_path = self.inject_indexes(
+                    destination_path, indexes_from_match
                 )
+                pprint.pprint(f"updated_destination_path: {updated_destination_path}")
 
-                destination_jsonpath = parse(updated_element_destination)
-                pprint.pprint(f"destination_jsonpath: {destination_jsonpath}")
-                destination_jsonpath.update_or_create(final_payload, match.value)
-                pprint.pprint(final_payload)
-                pprint.pprint("---- end destination part ----")
-            # return
+                batch_updates.append((updated_destination_path, match_value))
 
-        return final_payload
+            # Batch update transformed_payload for all found elements
+            print("\n\n----- Creating the transformed payload for element -----")
+            print(f"--> element: {element}")
+            for updated_path, value in batch_updates:
+                # pprint.pprint(f"updated_path: {updated_path}")
+                # pprint.pprint(f"value: {value}")
+                destination_jsonpath = parse(updated_path)
+                destination_jsonpath.update_or_create(transformed_payload, value)
+            pprint.pprint(f"transformed_payload: {transformed_payload}")
+
+        return transformed_payload
 
     def extract_indexes(self, path):
         """
-        Returns a list of the required indexes based on the groups that are part
-        of an input string with inner elements that follow this:
-        --> Begins with "["
+        Extract the required indexes from an input string containing
+        inner elements following the format:
+        --> Starts with "["
         --> Ends with "]"
 
         Examples:
             1. "hello.value" returns []
             2. "hello.list1[0].value.list2[3].othervalue" returns [0, 3]
             3. "hello.list1[2].value" returns [2]
-        """
 
+        Args:
+            path (str): The input string.
+
+        Returns:
+            list: A list of extracted indexes.
+        """
         pattern = r"\[(\d+)\]"
         indexes = re.findall(pattern, path)
         return [int(index) for index in indexes]
 
     def inject_indexes(self, path, indexes):
         """
-        Returns a string with inner elements that follow follow this pattern
-        replaced to the corresponding indexes replaced:
-        --> Begins with "["
+        Inject the given indexes into the input string where placeholders
+        follow the format:
+        --> Starts with "["
         --> Ends with "]"
-        The input string must follow the JMESPath standards.
+        The input string must adhere to JMESPath standards.
 
         Examples:
             1. ("value", []) returns "value"
             2. ("list1[*].value.list2[*].result", [1, 2]) returns "list1[1].value.list2[2].result"
             3. ("list1[*].value", [*]) returns "list1[2].value"
+
+        Args:
+            path (str): The input string.
+            indexes (list): The list of indexes to inject.
+
+        Returns:
+            str: The updated string with injected indexes.
         """
         for index in indexes:
             path = re.sub(r"\[\*\]", f"[{index}]", path, count=1)
         return path
+
+    def apply_transform_logic(self, match_value, logic):
+        """
+        Apply the transformation logic to the source value based on the provided logic.
+
+        Args:
+            match_value: The source value to be transformed.
+            logic: The transformation logic.
+
+        Returns:
+            The transformed value.
+        """
+        if "CASE" in logic and "enumsMapping" in logic["CASE"]:
+            enums_mapping = logic["CASE"]["enumsMapping"]
+            for enum in enums_mapping:
+                if match_value == enum["inputValue"]:
+                    return enum["outputValue"]
+            if "default" in logic["CASE"]:
+                return logic["CASE"]["default"]
+        return match_value

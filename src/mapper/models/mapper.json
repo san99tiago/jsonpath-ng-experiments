@@ -17,27 +17,27 @@
       "destination": "quotes[*].quality",
       "logic": {
         "CASE": {
-          "default": null,
+          "default": "N/A",
           "enumsMapping": [
             {
               "inputValue": 1,
-              "outputValue": "bad"
+              "outputValue": "BAD"
             },
             {
               "inputValue": 2,
-              "outputValue": "normal"
+              "outputValue": "NORMAL"
             },
             {
               "inputValue": 3,
-              "outputValue": "good"
+              "outputValue": "GOOD"
             },
             {
               "inputValue": 4,
-              "outputValue": "great"
+              "outputValue": "GREAT"
             },
             {
               "inputValue": 5,
-              "outputValue": "awesome"
+              "outputValue": "AWESOME"
             }
           ]
         }
