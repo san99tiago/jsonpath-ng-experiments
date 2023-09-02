@@ -1,14 +1,6 @@
 import os
 import json
-import pytest
-from jsonschema import ValidationError
 from src.mapper.validator import Validator
-
-
-# Mocking jsonschema.validate to control validation results
-@pytest.fixture
-def mock_jsonschema_validate(mocker):
-    return mocker.patch("jsonschema.validate")
 
 
 def test_validator_init_without_schema(mocker):
