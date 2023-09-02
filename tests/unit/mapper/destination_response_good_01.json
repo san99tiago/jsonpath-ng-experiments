@@ -4,7 +4,7 @@
       "id": "2008d4d2-49fd-48e4-a305-796b75953edd",
       "author": "Japanese Proverb",
       "quote": "Discipline will sooner or later defeat intelligence",
-      "quality": 5,
+      "quality": "AWESOME",
       "category": "Discipline",
       "sentiment": "Positive",
       "allTypes": [
@@ -26,7 +26,7 @@
       "id": "ab93c944-8c77-4e79-84e4-c78cb125f1ad",
       "author": "Alex Hormozi",
       "quote": "The longer you delay the ask, the bigger the ask you can make",
-      "quality": 5,
+      "quality": "AWESOME",
       "category": "Success",
       "sentiment": "Positive",
       "allTypes": [
@@ -51,7 +51,7 @@
       "id": "98d42874-29ad-47f8-977c-ba51857ae3ee",
       "author": "Benjamin Franklin",
       "quote": "Well done is better than well said",
-      "quality": 4,
+      "quality": "N/A",
       "category": "Life",
       "sentiment": "Positive",
       "allTypes": [
@@ -70,7 +70,7 @@
       "id": "419364b4-0e60-425a-8548-b14020b442ea",
       "author": "Charles F. Kettering",
       "quote": "A problem well stated is a problem half solved",
-      "quality": 3
+      "quality": "GOOD"
     }
   ]
 }
