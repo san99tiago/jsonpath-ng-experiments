@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from .mapper.mapper import Mapper
 from .mapper.validator import Validator
 
@@ -30,4 +30,5 @@ async def patch_payload(payload: dict):
     if payload_validation_result is True:
         mapper = Mapper(payload)
         return mapper.convert_payload()
-    return payload_validation_result
+    else:
+        raise HTTPException(status_code=400, detail=payload_validation_result)

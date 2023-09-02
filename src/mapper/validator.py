@@ -1,6 +1,6 @@
 import os
 import json
-from typing import Dict, Optional, Union, Literal, Any
+from typing import Dict, Optional, Union, Literal
 import jsonschema
 
 
@@ -38,7 +38,7 @@ class Validator:
             )
             return {
                 "Error": "Payload schema validation error",
-                "Details": {
+                "Reason": {
                     "Message": val_error.message,
                     "JsonPath": val_error.json_path,
                 },
