@@ -1,6 +1,7 @@
+import os
+import json
 import pytest
 from src.mapper.mapper import Mapper
-from jsonpath_ng.jsonpath import JSONPath
 
 
 # Mocking os.path.join to avoid reading a real JSON mapper file
@@ -170,3 +171,20 @@ def test_mapper_convert_payload_multiple():
             ]
         }
     }
+
+
+def test_mapper_real_complete_payload_01():
+    from src.mapper.mapper import Mapper
+
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    payload_path = os.path.join(current_dir, "source_payload_good_01.json")
+    response_path = os.path.join(current_dir, "destination_response_good_01.json")
+
+    with open(payload_path, "r") as payload_file:
+        payload = json.load(payload_file)
+
+    with open(response_path, "r") as response_file:
+        expected_response = json.load(response_file)
+
+    mapper = Mapper(payload)
+    assert mapper.convert_payload() == expected_response
